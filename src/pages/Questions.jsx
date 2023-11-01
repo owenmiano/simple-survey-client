@@ -10,33 +10,68 @@ import Certificates from "../components/Certificates";
 import FormCompleted from "../components/FormCompleted";
 
 function Questions() {
-  const { formStep, nextFormStep, prevFormStep } = useContext(FormContext);
-
+  const {currentQuestion,isLastQuestion , nextFormStep, prevFormStep,questions,currentQuestionIndex } = useContext(FormContext);
   return (
     <div className="form-container">
-      <Form currentStep={formStep} prevFormStep={prevFormStep}>
-        {formStep >= 0 && (
-          <FullName formStep={formStep} nextFormStep={nextFormStep} />
+      <Form currentStep={currentQuestionIndex} prevFormStep={prevFormStep} questions={questions}>
+      {questions
+  .filter((question, index) => currentQuestionIndex >= index)
+  .map((question, index) => (
+    <div key={index}>
+      {question.name === 'full_name' && (
+        <FullName
+          formStep={currentQuestionIndex}
+          nextFormStep={nextFormStep}
+          currentQuestion={question}
+        />
+      )}
+        {question.name === 'email_address' && (
+        <Email
+          formStep={currentQuestionIndex}
+          nextFormStep={nextFormStep}
+          currentQuestion={question}
+        />
+      )}
+       {question.name === 'gender' && (
+        <Gender
+          formStep={currentQuestionIndex}
+          nextFormStep={nextFormStep}
+          currentQuestion={question}
+        />
+      )}
+      {question.name === 'description' && (
+        <Description
+          formStep={currentQuestionIndex}
+          nextFormStep={nextFormStep}
+          currentQuestion={question}
+        />
+      )}
+    
+     
+      {question.name === 'programming_stack' && (
+        <ProgrammingStack
+          formStep={currentQuestionIndex}
+          nextFormStep={nextFormStep}
+          currentQuestion={question}
+        />
+      )}
+      {question.name === 'certificates' && (
+        <Certificates
+          formStep={currentQuestionIndex}
+          nextFormStep={nextFormStep}
+          currentQuestion={question}
+        />
+      )}
+    </div>
+  ))}
+
+{currentQuestionIndex > questions.length -1 && (
+          <FormCompleted />
         )}
-        {formStep >= 1 && (
-          <Email formStep={formStep} nextFormStep={nextFormStep} />
-        )}
-        {formStep >= 2 && (
-          <Description formStep={formStep} nextFormStep={nextFormStep} />
-        )}
-        {formStep >= 3 && (
-          <Gender formStep={formStep} nextFormStep={nextFormStep} />
-        )}
-        {formStep >= 4 && (
-          <ProgrammingStack formStep={formStep} nextFormStep={nextFormStep} />
-        )}
-        {formStep >= 5 && (
-          <Certificates formStep={formStep} nextFormStep={nextFormStep} />
-        )}
-        {formStep > 5 && <FormCompleted />}
       </Form>
     </div>
   );
 }
 
 export default Questions;
+

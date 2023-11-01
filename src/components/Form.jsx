@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 
-function Form({ children, currentStep, prevFormStep }) {
+function Form({ children, currentStep, prevFormStep,questions }) {
   return (
     <div className="form-card">
-      {currentStep < 6 && (
+      {currentStep < questions.length && (
         <>
           {currentStep > 0 && (
             <button className="back" onClick={prevFormStep} type="button">
@@ -11,11 +11,12 @@ function Form({ children, currentStep, prevFormStep }) {
             </button>
           )}
 
-          <span className="steps">Step {currentStep + 1} of 6</span>
+          <span className="steps">Step {currentStep + 1} of {questions.length}</span>
         </>
       )}
       {children}
     </div>
+    
   );
 }
 

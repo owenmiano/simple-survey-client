@@ -1,0 +1,49 @@
+[
+    {
+      "name": "full_name",
+      "type": "text",
+      "required":"yes",
+      "text": "What is your full name?",
+      "description": "[Surname] [First Name] [Other Names]"
+    },
+    {
+        "name": "email_address",
+        "type": "text",
+        "required":"yes",
+        "text": "What is your email address?",
+        "description": ""
+      },
+      {
+        "name": "gender",
+        "type": "radio",
+        "text": "What is your gender?",
+        "description": "Select your response.",
+        "options": ["Male", "Female","Other"],
+        "required":"yes"
+      },
+    {
+        "name": "description",
+        "type": "long_text",
+        "required":"yes",
+        "text": "Tell us a bit more about yourself?",
+        "description": ""
+      },
+       {
+        "name": "programming_stack",
+        "type": "checkbox",
+        "text": "Which programming stacks are you familiar with? Select at least one",
+        "description": "You can select multiple",
+        "options": ["REACT", "ANGULAR","VUE","SQL","POSTGRES","MYSQL","MSSQL","Java","PHP","GO","RUST"],
+        "required":"yes"
+      },
+      
+    {
+        "name": "certificates",
+        "type": "file",
+        "required":"yes",
+        "text": "Upload any of your certificates",
+        "description": "You can upload multiple (.pdf)"
+      }
+  ]
+
+  

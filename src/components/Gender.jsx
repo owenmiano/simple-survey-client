@@ -1,9 +1,8 @@
-import React, { useContext } from 'react'
-import { FormContext } from '../context/FormContext';
+import React, { useContext } from "react";
+import { FormContext } from "../context/FormContext";
 import { useForm } from "react-hook-form";
 
-
-function Gender({ formStep, nextFormStep }) {
+function Gender({ formStep, nextFormStep, currentQuestion }) {
   const { setFormValues } = useContext(FormContext);
 
   const {
@@ -17,40 +16,33 @@ function Gender({ formStep, nextFormStep }) {
     nextFormStep();
   };
   return (
-    <div className={formStep === 3 ? "showForm" : "hideForm"}>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="formRow">
-        <p>What's your gender?</p>
-        <div className="radio-container">
-  <input
-    type="radio"
-    value="Male"
-    id="male"
-    name="gender"
-    {...register("gender", { required: true })}
-  />
-  <label htmlFor="male">Male</label>
-</div>
+    <div className={formStep === 2 ? "showForm" : "hideForm"}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="formRow">
+          <p>{currentQuestion.text}</p>
+          <div className="radio-container">
+            {currentQuestion.options.map((option) => (
+              <div key={option} className="radio-option">
+                <input
+                  type={currentQuestion.type}
+                  value={option}
+                  id={option}
+                  name={currentQuestion.name}
+                  {...register(currentQuestion.name, { required: currentQuestion.required === 'yes' })}
+                />
+                <label htmlFor={option}>{option}</label>
+              </div>
+            ))}
+          </div>
 
-<div className="radio-container">
-  <input
-    type="radio"
-    value="Female"
-    id="female"
-    name="gender"
-    {...register("gender", { required: true })}
-  />
-  <label htmlFor="female">Female</label>
-</div>
-        {errors.gender && (
-          <p className="errorText">Gender is required</p>
-        )}
-      </div>
-      <button className="next">Next</button>
-    </form>
-  </div>
-
-  )
+          {errors[currentQuestion.name]&& (
+      <p className="errorText">{currentQuestion.name} is required</p>
+    )}
+        </div>
+        <button className="next">Next</button>
+      </form>
+    </div>
+  );
 }
 
-export default Gender
+export default Gender;

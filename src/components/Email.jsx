@@ -3,7 +3,7 @@ import { FormContext } from '../context/FormContext';
 import { useForm } from "react-hook-form";
 
 
-function Email({ formStep, nextFormStep }) {
+function Email({ formStep, nextFormStep,currentQuestion }) {
   const { setFormValues } = useContext(FormContext);
 
   const {
@@ -20,15 +20,17 @@ function Email({ formStep, nextFormStep }) {
     <div className={formStep === 1 ? "showForm" : "hideForm"}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="formRow">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          {...register("email", { required: true })}
-        />
-        {errors.email && (
-          <p className="errorText">Email is required</p>
-        )}
+      <p>{currentQuestion.text}</p>
+    <input
+      type={currentQuestion.type}
+      id={currentQuestion.name}
+      {...register(currentQuestion.name,  { required: currentQuestion.required === 'yes' })}
+      placeholder={currentQuestion.description}
+    />
+    {errors[currentQuestion.name]&& (
+      <p className="errorText">{currentQuestion.name} is required</p>
+    )}
+ 
       </div>
       <button className="next">Next</button>
     </form>

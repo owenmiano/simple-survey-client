@@ -3,7 +3,7 @@ import { FormContext } from '../context/FormContext';
 import { useForm } from "react-hook-form";
 
 
-function ProgrammingStack({ formStep, nextFormStep }) {
+function ProgrammingStack({ formStep, nextFormStep,currentQuestion }) {
   const { setFormValues } = useContext(FormContext);
 
   const {
@@ -16,92 +16,30 @@ function ProgrammingStack({ formStep, nextFormStep }) {
     setFormValues(values);
     nextFormStep();
   };
+  console.log(currentQuestion)
   return (
     <div className={formStep === 4 ? "showForm" : "hideForm"}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="formRow">
-      <p>Select at least one option:</p>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="SQL"
-    />
-    SQL
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="VUE"
-    />
-    Vue
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="REACT"
-    />
-    REACT
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="Postgres"
-    />
-    Postgres
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="MYSQL"
-    />
-    MYSQL
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="MSSQL"
-    />
-    MSSQL
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="JAVA"
-    />
-    JAVA
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="PHP"
-    />
-    PHP
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="GO"
-    />
-    GO
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      {...register("skills", { required: true })}
-      value="RUST"
-    />
-    RUST
-  </label>
-        {errors.skills && (
+      <p>{currentQuestion.text}</p>
+      <div className="checkbox-container">
+    {currentQuestion.options.map((option) => (
+      <div key={option} className="checkbox-option">
+        <input
+          type={currentQuestion.type}
+          value={option}
+          id={option}
+          name={currentQuestion.name}
+          {...register(currentQuestion.name, {
+            required: currentQuestion.required === 'yes',
+          })}
+        />
+        <label htmlFor={option}>{option}</label>
+      </div>
+    ))}
+  </div>
+  
+        {errors[currentQuestion.name] && (
           <p className="errorText">Please select at least one skill</p>
         )}
       </div>

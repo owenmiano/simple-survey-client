@@ -3,7 +3,7 @@ import { FormContext } from '../context/FormContext';
 import { useForm } from "react-hook-form";
 
 
-function Certificates({ formStep, nextFormStep }) {
+function Certificates({ formStep, nextFormStep,currentQuestion }) {
   const { setFormValues } = useContext(FormContext);
 
   const {
@@ -20,15 +20,15 @@ function Certificates({ formStep, nextFormStep }) {
     <div className={formStep === 5 ? "showForm" : "hideForm"}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="formRow">
-      <label>
-    Upload any of your certificates:
+      <p>{currentQuestion.text}</p>
     <input
-      type="file"
-      id="certificate"
+      type={currentQuestion.type}
+      id={currentQuestion.name}
+      accept="application/pdf"
       {...register("certificate", { required: true })}
       multiple
     />
-  </label>
+
         {errors.certificate && (
           <p className="errorText">Upload atleast one of your certificates</p>
         )}
