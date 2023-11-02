@@ -16,7 +16,6 @@ function ProgrammingStack({ formStep, nextFormStep,currentQuestion }) {
     setFormValues(values);
     nextFormStep();
   };
-  console.log(currentQuestion)
   return (
     <div className={formStep === 4 ? "showForm" : "hideForm"}>
     <form onSubmit={handleSubmit(onSubmit)}>

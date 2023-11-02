@@ -9,7 +9,7 @@
   border-radius: 4px;
   box-shadow: 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 #0000;
   background: white;
-  width: 30%; /* Adjust the width as needed */
+  width: 30%;
 }
 
 .steps {
@@ -18,7 +18,7 @@
     color:#293241;
     font-size: 1.2rem;
   }
-  .back {
+  .previous {
     margin-right: 1rem;
     padding: 0.3rem;
     cursor: pointer;
@@ -60,4 +60,59 @@
     padding: 0.5rem 1rem;
     padding-left: 1rem;
     font-size: 1rem;
+  }
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .page-item {
+    margin: 0 2px;
+  }
+  
+  .page-link {
+    display: block;
+    padding: 5px 10px;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .page-link:hover {
+    background-color: #0056b3;
+    color: #fff;
+    border: 1px solid #0056b3;
+  }
+  
+  .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    cursor: default;
+  }
+  
+  .page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    .form-card {
+      width: 80%; /* Adjust the width for smaller screens */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .form-card {
+      width: 100%; /* Adjust the width for even smaller screens */
+    }
   }

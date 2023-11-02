@@ -7,7 +7,7 @@ import Gender from "../components/Gender";
 import Description from "../components/Description";
 import ProgrammingStack from "../components/ProgrammingStack";
 import Certificates from "../components/Certificates";
-import FormCompleted from "../components/FormCompleted";
+import Review from "../components/Review";
 
 function Questions() {
   const {currentQuestion,isLastQuestion , nextFormStep, prevFormStep,questions,currentQuestionIndex } = useContext(FormContext);
@@ -62,12 +62,15 @@ function Questions() {
           currentQuestion={question}
         />
       )}
+        {question.name === 'review' && (
+        <Review
+          formStep={currentQuestionIndex}
+        />
+      )}
     </div>
+    
   ))}
 
-{currentQuestionIndex > questions.length -1 && (
-          <FormCompleted />
-        )}
       </Form>
     </div>
   );

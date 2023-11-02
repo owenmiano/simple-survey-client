@@ -1,8 +1,15 @@
 import React from 'react'
+import ResponseCards from '../components/ResponseCards'
+import SearchResponseInput from '../components/SearchResponseInput'
+import Pagination from '../components/Pagination'
 
 function Responses() {
   return (
-    <div>Responses</div>
+    <>
+    <SearchResponseInput/>
+    <ResponseCards/>
+    <Pagination/>
+    </>
   )
 }
 

@@ -6,8 +6,8 @@ function Form({ children, currentStep, prevFormStep,questions }) {
       {currentStep < questions.length && (
         <>
           {currentStep > 0 && (
-            <button className="back" onClick={prevFormStep} type="button">
-              back
+            <button className="previous" onClick={prevFormStep} type="button">
+              Previous
             </button>
           )}
 
