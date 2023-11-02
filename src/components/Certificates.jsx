@@ -33,7 +33,7 @@ function Certificates({ formStep, nextFormStep,currentQuestion }) {
           <p className="errorText">Upload atleast one of your certificates</p>
         )}
       </div>
-      <button className="next">Submit</button>
+      <button className="next">Next</button>
     </form>
   </div>
 

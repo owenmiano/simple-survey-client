@@ -39,7 +39,7 @@ function ProgrammingStack({ formStep, nextFormStep,currentQuestion }) {
   </div>
   
         {errors[currentQuestion.name] && (
-          <p className="errorText">Please select at least one skill</p>
+          <p className="errorText">Please select at least one language</p>
         )}
       </div>
       <button className="next">Next</button>

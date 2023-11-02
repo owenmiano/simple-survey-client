@@ -36,6 +36,13 @@
         "options": ["REACT", "ANGULAR","VUE","SQL","POSTGRES","MYSQL","MSSQL","Java","PHP","GO","RUST"],
         "required":"yes"
       },
+      {
+        "name": "certificate",
+        "type": "file",
+        "required": "yes",
+        "text": "Upload any of your certificates",
+        "description": "You can upload multiple (.pdf)"
+      },
       
     {
         "name": "review"

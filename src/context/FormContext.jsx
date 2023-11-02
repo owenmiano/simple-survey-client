@@ -10,20 +10,18 @@ export const FormContextProvider = ({ children }) => {
   // Determine if it's the last question
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   useEffect(() => {
-    fetch('/src/questions.json')
+    fetch("/src/questions.json")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
-      .then((questionns) =>
-      {
-      setQuestions(questionns)
-    })
-      .catch((error) => console.error('Failed to fetch questions:', error));
+      .then((questionns) => {
+        setQuestions(questionns);
+      })
+      .catch((error) => console.error("Failed to fetch questions:", error));
   }, []);
-  
 
   const setFormValues = (values) => {
     setData((prevValues) => ({
@@ -36,13 +34,13 @@ export const FormContextProvider = ({ children }) => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
-  }
+  };
 
-  const prevFormStep = () =>{
-    if (currentQuestionIndex  > 0) {
+  const prevFormStep = () => {
+    if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
-  } 
+  };
   const currentQuestion = questions[currentQuestionIndex];
   return (
     <FormContext.Provider
