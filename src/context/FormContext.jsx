@@ -8,12 +8,15 @@ export const FormContextProvider = ({ children }) => {
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
   const [responses, setResponses] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   // Determine if it's the last question
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
   // Api to fetch questions
   useEffect(() => {
-    fetch(`${baseUrl}/api/questions/responses`)
+    fetch(`${baseUrl}/api/questions`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -21,7 +24,7 @@ export const FormContextProvider = ({ children }) => {
         return response.json();
       })
       .then((resp) => {
-        setResponses(resp);
+        setQuestions(resp);
       })
       .catch((error) => console.error("Failed to fetch questions:", error));
   }, []);
@@ -34,19 +37,47 @@ export const FormContextProvider = ({ children }) => {
   };
 
   // Api to fetch responses
+  const fetchResponses = async (page) => {
+    try {
+      const response = await fetch(`${baseUrl}/api/questions/responses?page=${page}`);
+      const data = await response.json();
+      setResponses(data.responses);
+      setTotalPages(data.totalPages);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    fetch(`${baseUrl}/api/questions`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+    fetchResponses(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+
+    // Function to filter responses by email
+    const filterResponsesByEmail = async (email) => {
+
+      try {
+        if (email !=='all')  {
+          const response = await fetch(`${baseUrl}/api/questions/responses/${email}`);
+          const data = await response.json();
+          setResponses(data.responses);
+          setTotalPages(data.totalPages);
+        } else {
+          fetchResponses(currentPage);
+
         }
-        return response.json();
-      })
-      .then((questionns) => {
-        setQuestions(questionns);
-      })
-      .catch((error) => console.error("Failed to fetch questions:", error));
-  }, []);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const handleFilterResponsesByEmail = (email) => {
+      setCurrentPage(1);
+      filterResponsesByEmail(email);
+    };
+  
 
   const downloadCertificate = async(id,fileName) => {
 
@@ -95,7 +126,11 @@ export const FormContextProvider = ({ children }) => {
         prevFormStep,
         data,
         setFormValues,
-        downloadCertificate
+        downloadCertificate,
+        handlePageChange,
+        totalPages,
+        currentPage,
+        handleFilterResponsesByEmail
       }}
     >
       {children}

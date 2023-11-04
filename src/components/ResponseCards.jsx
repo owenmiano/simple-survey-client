@@ -8,7 +8,7 @@ function ResponseCards({ responses,downloadCertificate }) {
     <div className="container">
       <div className="row" style={{ display: "flex", flexWrap: "wrap" }}>
         {responses.map((response) => (
-          <div className="col-md-4" style={{ marginTop: "20px" }} key={response.id}>
+          <div className="col-md-4" style={{ marginTop: "20px",justifyContent: "center" }} key={response.id}>
             <Card style={{ width: "18rem", margin: "10px" }}>
               <Card.Body>
                 <Card.Title>Survey Response</Card.Title>
