@@ -55,7 +55,7 @@ function Questions() {
           currentQuestion={question}
         />
       )}
-      {question.name === 'certificate' && (
+      {question.name === 'pdf' && (
         <Certificates
           formStep={currentQuestionIndex}
           nextFormStep={nextFormStep}

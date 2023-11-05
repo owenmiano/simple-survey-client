@@ -1,9 +1,12 @@
-import React from "react";
+import React ,{useContext} from "react";
+import { FormContext } from "../context/FormContext";
 
 function Form({ children, currentStep, prevFormStep,questions }) {
+    const { submissionSuccessful  } = useContext(FormContext);
+
   return (
     <div className="form-card">
-      {currentStep < questions.length && (
+      {!submissionSuccessful && currentStep < questions.length && (
         <>
           {currentStep > 0 && (
             <button className="previous" onClick={prevFormStep} type="button">

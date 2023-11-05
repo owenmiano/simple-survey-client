@@ -1,9 +1,9 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 function ResponseCards({ responses,downloadCertificate }) {
-  console.log(responses)
   return (
     <div className="container">
       <div className="row" style={{ display: "flex", flexWrap: "wrap" }}>
@@ -12,9 +12,9 @@ function ResponseCards({ responses,downloadCertificate }) {
             <Card style={{ width: "18rem", margin: "10px" }}>
               <Card.Body>
                 <Card.Title>Survey Response</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  Full Name: {response.full_name}
-                </Card.Subtitle>
+                <Card.Text className="mb-2 text-muted">
+                  Full Name: <strong>{response.full_name}</strong>
+                </Card.Text>
                 <Card.Text>
                   Email Address: <strong>{response.email_address}</strong>
                 </Card.Text>
@@ -28,7 +28,9 @@ function ResponseCards({ responses,downloadCertificate }) {
                 <Card.Text>
                   Programming Stack: <strong>{response.programming_stack}</strong>
                 </Card.Text>
+                <Card.Text>Certificates:</Card.Text>
                 <div className="certificates-links">
+                
   {response.Certificates && response.Certificates.length > 0 ? (
     <ul>
       {response.Certificates.map((certificate) => {
@@ -51,6 +53,7 @@ function ResponseCards({ responses,downloadCertificate }) {
 
 
               </Card.Body>
+              <Card.Footer className="text-muted">Date Responded: {moment(response.createdAt).format("YYYY/MM/DD hh:mm A")}</Card.Footer>
             </Card>
           </div>
         ))}

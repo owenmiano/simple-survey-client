@@ -10,7 +10,8 @@ export const FormContextProvider = ({ children }) => {
   const [responses, setResponses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const[submissionSuccessful ,setSubmissionSuccessful]=useState(false);
   // Determine if it's the last question
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
@@ -36,6 +37,47 @@ export const FormContextProvider = ({ children }) => {
     }));
   };
 
+  // Api to submit responses
+  const submitResponses = async (data) => {
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('full_name', data.full_name); 
+      formData.append('email_address', data.email_address);
+      formData.append('description', data.description); 
+      formData.append('gender', data.gender);
+      formData.append('programming_stack', data.programming_stack); 
+      if (data.pdf && data.pdf.length > 0) {
+        for (let i = 0; i < data.pdf.length; i++) {
+          formData.append('pdf', data.pdf[i]); // Append each file individually with the same field name
+        }
+      }
+      const response = await fetch(`${baseUrl}/api/questions/responses`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (response.ok) {
+        setIsLoading(false);
+      const responseData = await response.json();
+      let newest=responseData.responses;
+      setIsLoading(false);
+      setSubmissionSuccessful(true);
+
+      if(newest){
+        setResponses((prev)=>[...prev,newest]);
+        setTotalPages(responseData.totalPages);
+      }
+
+    } else {
+      console.error('Response not OK:', response.status, response.statusText);
+    }
+  } catch (error) {
+    setIsLoading(false);
+    console.error('Request failed:', error);
+  }
+  };
+
+
   // Api to fetch responses
   const fetchResponses = async (page) => {
     try {
@@ -47,11 +89,13 @@ export const FormContextProvider = ({ children }) => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     fetchResponses(currentPage);
   }, [currentPage]);
 
   const handlePageChange = (page) => {
+    fetchResponses(currentPage);
     setCurrentPage(page);
   };
 
@@ -130,7 +174,10 @@ export const FormContextProvider = ({ children }) => {
         handlePageChange,
         totalPages,
         currentPage,
-        handleFilterResponsesByEmail
+        handleFilterResponsesByEmail,
+        submitResponses,
+        isLoading,
+        submissionSuccessful
       }}
     >
       {children}

@@ -18,14 +18,14 @@ function Certificates({ formStep, nextFormStep,currentQuestion }) {
   };
   return (
     <div className={formStep === 5 ? "showForm" : "hideForm"}>
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <div className="formRow">
       <p>{currentQuestion.text}</p>
     <input
       type={currentQuestion.type}
       id={currentQuestion.name}
       accept="application/pdf"
-      {...register("certificate", { required: true })}
+      {...register(currentQuestion.name, { required: true })}
       multiple
     />
 
