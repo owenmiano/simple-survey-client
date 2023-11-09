@@ -5,7 +5,7 @@ import Pagination from '../components/Pagination'
 import { FormContext } from "../context/FormContext";
 
 function Responses() {
-  const {responses,downloadCertificate,handlePageChange,totalPages,currentPage,handleFilterResponsesByEmail} = useContext(FormContext);
+  const {hasData,responses,downloadCertificate,handlePageChange,totalPages,currentPage,handleFilterResponsesByEmail} = useContext(FormContext);
 
   return (
     <>
@@ -13,7 +13,7 @@ function Responses() {
           <>
             <SearchResponseInput responses={responses} handleFilterResponsesByEmail={handleFilterResponsesByEmail}/>
             <ResponseCards responses={responses} downloadCertificate={downloadCertificate}/>
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}/>
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} hasData={hasData}/>
             </>
     ) : (
       <p>There are no responses yet.</p>

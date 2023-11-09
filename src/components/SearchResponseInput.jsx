@@ -14,7 +14,8 @@ function SearchResponseInput({ handleFilterResponsesByEmail,responses }) {
   return (
     <div className="mt-4 text-center">
        <form onChange={handleSubmit(onChange)} noValidate>
-       <select {...register("email")}>
+       <label htmlFor="filterResponses">Filter Responses </label>
+    <select {...register("email")} id="filterResponses" style={{ marginLeft: '10px' }}>
           <option value="all">All Responses</option>
           {responses.map((response) => (
             <option key={response.id} value={response.email_address}>

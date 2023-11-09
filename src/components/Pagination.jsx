@@ -1,6 +1,6 @@
 import React from "react";
 
-function Pagination({ currentPage, totalPages, onPageChange }) {
+function Pagination({ currentPage, totalPages, onPageChange,hasData }) {
   const pageNumbers = [];
 
   for (let i = 1; i <= totalPages; i++) {
@@ -16,7 +16,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             className={`page-item ${number === currentPage ? "active" : ""}`}
           >
             <a onClick={() => onPageChange(number)} className="page-link">
-              {number === 2 && totalPages > 1 ? "2" : number}
+            {hasData && number === currentPage ? currentPage : number}
             </a>
           </li>
         ))}

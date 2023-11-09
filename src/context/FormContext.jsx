@@ -12,6 +12,7 @@ export const FormContextProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const[submissionSuccessful ,setSubmissionSuccessful]=useState(false);
+  const [hasData, setHasData] = useState(false);
   // Determine if it's the last question
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
@@ -83,8 +84,13 @@ export const FormContextProvider = ({ children }) => {
     try {
       const response = await fetch(`${baseUrl}/api/questions/responses?page=${page}`);
       const data = await response.json();
-      setResponses(data.responses);
-      setTotalPages(data.totalPages);
+      if (data && data.responses.length > 0) {
+        setHasData(true);
+        setResponses(data.responses);
+        setTotalPages(data.totalPages);
+      } else {
+        setHasData(false);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -100,7 +106,7 @@ export const FormContextProvider = ({ children }) => {
   };
 
 
-    // Function to filter responses by email
+    // filtering of the responses based on email_address
     const filterResponsesByEmail = async (email) => {
 
       try {
@@ -122,7 +128,7 @@ export const FormContextProvider = ({ children }) => {
       filterResponsesByEmail(email);
     };
   
-
+// download a certificate by providing the id of the certificate
   const downloadCertificate = async(id,fileName) => {
 
     try {
@@ -177,7 +183,8 @@ export const FormContextProvider = ({ children }) => {
         handleFilterResponsesByEmail,
         submitResponses,
         isLoading,
-        submissionSuccessful
+        submissionSuccessful,
+        hasData
       }}
     >
       {children}

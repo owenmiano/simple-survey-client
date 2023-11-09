@@ -20,8 +20,7 @@ function Review({ formStep }) {
           Description: <strong>{data.description}</strong>
         </p>
         <p>
-          Programming Stack:
-          <strong>{data.programming_stack.join(", ")}</strong>
+          Programming Stack: <strong>{data.programming_stack.join(", ")}</strong>
         </p>
         <div>
   <p>Certificates Uploaded:</p>
