@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { baseUrl } from "../utils/service";
+import { XMLParser } from "fast-xml-parser";
 
 export const FormContext = createContext("");
 
@@ -12,24 +13,41 @@ export const FormContextProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const[submissionSuccessful ,setSubmissionSuccessful]=useState(false);
-  const [hasData, setHasData] = useState(false);
   // Determine if it's the last question
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
-
+  
+  // // function to fetch xml data
+  // const fetchXmlData = async (apiUrl) => {
+  //   const response = await fetch(apiUrl);
+  //   const xmlText = await response.text();
+  //   const result=await xml2js.parseString(xmlText);
+  //   return result;
+  // };
+  
   // Api to fetch questions
   useEffect(() => {
-    fetch(`${baseUrl}/api/questions`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((resp) => {
-        setQuestions(resp);
-      })
-      .catch((error) => console.error("Failed to fetch questions:", error));
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/questions`);
+        const xmlText = await response.text();
+
+        // Use fast-xml-parser for parsing XML
+        const parser = new XMLParser();
+        const result = parser.parse(xmlText);
+        // Access the array of questions based on your XML structure
+        const questionsArray = result.questions.question;
+
+        // Set the state with the questions array
+        setQuestions(questionsArray);
+      } catch (error) {
+        console.error('Error fetching/parsing XML data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
+ 
+  
 
   const setFormValues = (values) => {
     setData((prevValues) => ({
@@ -83,14 +101,21 @@ export const FormContextProvider = ({ children }) => {
   const fetchResponses = async (page) => {
     try {
       const response = await fetch(`${baseUrl}/api/questions/responses?page=${page}`);
-      const data = await response.json();
-      if (data && data.responses.length > 0) {
-        setHasData(true);
-        setResponses(data.responses);
-        setTotalPages(data.totalPages);
-      } else {
-        setHasData(false);
-      }
+      const xmlText = await response.text();
+
+        // Use fast-xml-parser for parsing XML
+        const parser = new XMLParser();
+        const result = parser.parse(xmlText);
+        // Check if responses is an array before setting the state
+      if (Array.isArray(result.responses.response)) {
+        setResponses(result.responses.response);
+        setTotalPages(result.responses.pagination.totalPages);
+      } else if (result.responses.response) {
+        // If it's a single response object, convert it to an array
+        setResponses([result.responses.response]);
+        setTotalPages(result.responses.pagination.totalPages);
+
+      } 
     } catch (error) {
       console.error(error);
     }
@@ -101,36 +126,41 @@ export const FormContextProvider = ({ children }) => {
   }, [currentPage]);
 
   const handlePageChange = (page) => {
-    fetchResponses(currentPage);
+    fetchResponses(page);
     setCurrentPage(page);
   };
 
 
     // filtering of the responses based on email_address
     const filterResponsesByEmail = async (email) => {
-
       try {
         if (email !=='all')  {
           const response = await fetch(`${baseUrl}/api/questions/responses/${email}`);
-          const data = await response.json();
-          setResponses(data.responses);
-          setTotalPages(data.totalPages);
-        } else {
-          fetchResponses(currentPage);
-
-        }
+          const xmlText = await response.text();
+        const parser = new XMLParser();
+        const result = parser.parse(xmlText);
+        // Check if responses is an array before setting the state
+      if (Array.isArray(result.responses.response)) {
+        setResponses(result.responses.response);
+      } else if (result.responses.response) {
+        // If it's a single response object, convert it to an array
+        setResponses([result.responses.response]);
+      } 
+    } else {
+      // If email is 'all', fetch all responses
+      fetchResponses(currentPage);
+    }
       } catch (error) {
         console.error(error);
       }
     }
     const handleFilterResponsesByEmail = (email) => {
-      setCurrentPage(1);
+      // setCurrentPage(1);
       filterResponsesByEmail(email);
     };
   
 // download a certificate by providing the id of the certificate
   const downloadCertificate = async(id,fileName) => {
-
     try {
       const response = await fetch(`${baseUrl}/api/questions/responses/certificates/${id}`);
 
@@ -184,7 +214,6 @@ export const FormContextProvider = ({ children }) => {
         submitResponses,
         isLoading,
         submissionSuccessful,
-        hasData
       }}
     >
       {children}

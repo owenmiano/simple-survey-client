@@ -16,7 +16,7 @@ function Pagination({ currentPage, totalPages, onPageChange,hasData }) {
             className={`page-item ${number === currentPage ? "active" : ""}`}
           >
             <a onClick={() => onPageChange(number)} className="page-link">
-            {hasData && number === currentPage ? currentPage : number}
+            {number === currentPage ? currentPage : number}
             </a>
           </li>
         ))}
